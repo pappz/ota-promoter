@@ -46,7 +46,7 @@ $ curl  http://192.168.0.10:9090/files | python3 -m json.tool
 }
 ```
 
-### Download file(https://www.google.com)
+### Download file by hash
 ```
 curl  http://192.168.0.10:9090/files/96f264583956281570cc591158c9371f8bba3736
 ```
