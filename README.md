@@ -26,13 +26,13 @@ files. Based on the hash code the HTTP client can download the modified files.
 
 ## API
 
-Get current version code
+### Get current version code
 ```
 $ curl -v http://192.168.0.10:9090/files/version
 {"version":"8a841114726b9f327a6b94d6d129ec8588b5bdc7"}
 ```
 
-List of available files
+### List of available files
 ```
 $ curl  http://192.168.0.10:9090/files | python3 -m json.tool
 {
@@ -46,7 +46,7 @@ $ curl  http://192.168.0.10:9090/files | python3 -m json.tool
 }
 ```
 
-Download file
+### Download file(https://www.google.com)
 ```
 curl  http://192.168.0.10:9090/files/96f264583956281570cc591158c9371f8bba3736
 ```
