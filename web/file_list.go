@@ -1,18 +1,20 @@
-package main
+package web
 
 import (
 	"encoding/json"
+
+	"bitbucket.org/pzoli/ota-promoter/promoter"
 )
 
 type Response struct {
-	Files   []*PromotedFile `json:"files"`
-	Version string          `json:"version"`
+	Files   []*promoter.File `json:"files"`
+	Version string           `json:"version"`
 }
 
 func fileList(r *request) {
 	var resp = &Response{
-		Version: version,
-		Files:   promotedFiles,
+		Version: r.service.Version(),
+		Files:   r.service.PromotedFiles(),
 	}
 
 	j, err := json.Marshal(resp)

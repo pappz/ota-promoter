@@ -1,4 +1,4 @@
-package main
+package web
 
 import (
 	"encoding/json"
@@ -10,11 +10,11 @@ type ResponseVersion struct {
 
 func getVersion(r *request) {
 	v := &ResponseVersion{
-		Version: version,
+		Version: r.service.Version(),
 	}
 
 	if j, err := json.Marshal(v); err == nil {
 		responseJson(r.w, j)
 	}
-	r.log.Infof("get version information (%s)", version)
+	r.log.Infof("get version information (%s)", v.Version)
 }
