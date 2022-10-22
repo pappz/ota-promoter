@@ -11,21 +11,8 @@ import (
 	"bitbucket.org/pzoli/ota-promoter/promoter"
 )
 
-type request struct {
-	w       http.ResponseWriter
-	r       *http.Request
-	service promoter.Promoter
-	log     *log.Entry
-}
-
-func responseJson(w http.ResponseWriter, data []byte) {
-	w.Header().Set("Content-Type", "application/json")
-	_, _ = w.Write(data)
-}
-
 type Server struct {
 	httpServer *http.Server
-	service    promoter.Promoter
 }
 
 func NewServer(listenAddress string, service promoter.Promoter) Server {
@@ -39,12 +26,13 @@ func NewServer(listenAddress string, service promoter.Promoter) Server {
 
 	s := Server{
 		httpServer: httpServer,
-		service:    service,
 	}
 
-	router.HandleFunc("/files", s.handler(fileList)).Methods("GET")
-	router.HandleFunc("/files/version", s.handler(getVersion)).Methods("GET")
-	router.HandleFunc("/files/{checksum}", s.handler(downloadFile)).Methods("GET")
+	middleware := NewMiddleware(service)
+
+	router.HandleFunc("/files", middleware.Handle(fileList)).Methods("GET")
+	router.HandleFunc("/files/version", middleware.Handle(getVersion)).Methods("GET")
+	router.HandleFunc("/files/{checksum}", middleware.Handle(downloadFile)).Methods("GET")
 
 	return s
 }
@@ -61,16 +49,4 @@ func (s *Server) ShutDownServer() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	return s.httpServer.Shutdown(ctx)
-}
-
-func (s *Server) handler(h func(r *request)) func(w http.ResponseWriter, r *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		request := &request{
-			w:       w,
-			r:       r,
-			service: s.service,
-			log:     log.WithFields(log.Fields{"tag": "web", "address": r.RemoteAddr}),
-		}
-		h(request)
-	}
 }

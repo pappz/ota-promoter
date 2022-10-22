@@ -1,8 +1,8 @@
 package web
 
 import (
+	"errors"
 	"io"
-	"net/http"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -10,14 +10,17 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func downloadFile(r *request) {
+var (
+	errFileNotFound = errors.New("file not found")
+)
+
+func downloadFile(r *request) (ResponseData, error) {
 	params := mux.Vars(r.r)
 	checksum := params["checksum"]
 	pf, ok := r.service.PromotedFileByChecksum(checksum)
 	if !ok {
 		r.log.Errorf("file not found by checksum: %s", checksum)
-		http.Error(r.w, "file not found by checksum.", http.StatusNotFound)
-		return
+		return nil, errFileNotFound
 	}
 
 	openFile, err := os.Open(pf.LocalPath)
@@ -27,8 +30,7 @@ func downloadFile(r *request) {
 
 	if err != nil {
 		r.log.Errorf("Failed to open file: %s", err.Error())
-		http.Error(r.w, "File not found.", 404)
-		return
+		return nil, ErrRespInternalError
 	}
 
 	//Send the headers
@@ -41,4 +43,5 @@ func downloadFile(r *request) {
 		r.log.Errorf("failed to write out the file to the client: %v", err)
 	}
 	r.log.Infof("download promoted file: %s - %s", checksum, pf.PromotedPath)
+	return nil, nil
 }
