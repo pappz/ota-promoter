@@ -9,6 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"bitbucket.org/pzoli/ota-promoter/promoter"
+	"bitbucket.org/pzoli/ota-promoter/web/api"
 )
 
 type Server struct {
@@ -17,6 +18,10 @@ type Server struct {
 
 func NewServer(listenAddress string, service promoter.Promoter) Server {
 	router := mux.NewRouter()
+	api.RegisterFileListHandler(router, service)
+	api.RegisterDownloadHandler(router, service)
+	api.RegisterVersionHandler(router, service)
+
 	httpServer := &http.Server{
 		Addr:         listenAddress,
 		Handler:      router,
@@ -27,13 +32,6 @@ func NewServer(listenAddress string, service promoter.Promoter) Server {
 	s := Server{
 		httpServer: httpServer,
 	}
-
-	middleware := NewMiddleware(service)
-
-	router.HandleFunc("/files", middleware.Handle(fileList)).Methods("GET")
-	router.HandleFunc("/files/version", middleware.Handle(getVersion)).Methods("GET")
-	router.HandleFunc("/files/{checksum}", middleware.Handle(downloadFile)).Methods("GET")
-
 	return s
 }
 

@@ -1,4 +1,4 @@
-package web
+package middleware
 
 import (
 	"encoding/json"
@@ -6,8 +6,6 @@ import (
 	"net/http"
 
 	log "github.com/sirupsen/logrus"
-
-	"bitbucket.org/pzoli/ota-promoter/promoter"
 )
 
 var (
@@ -20,17 +18,9 @@ type ErrorResponse struct {
 	Message string
 }
 
-// Middleware prepare all necessary data for the handlers and
+// JsonParser prepare all necessary data for the handlers and
 // manage the json responses and errors
-type Middleware struct {
-	service promoter.Promoter
-}
-
-// NewMiddleware instantiate a new Middleware
-func NewMiddleware(service promoter.Promoter) Middleware {
-	return Middleware{
-		service: service,
-	}
+type JsonParser struct {
 }
 
 // Handle manage the http headers and status codes in the response.
@@ -38,13 +28,12 @@ func NewMiddleware(service promoter.Promoter) Middleware {
 // Json marshal step and send it out. In case the handler response with
 // error the middleware send out the proper status code with the Json error
 // message.
-func (m Middleware) Handle(h Handler) func(http.ResponseWriter, *http.Request) {
+func (m JsonParser) Handle(h Handler) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		request := &request{
-			w:       w,
-			r:       r,
-			service: m.service,
-			log:     log.WithFields(log.Fields{"tag": "web", "address": r.RemoteAddr}),
+		request := &Request{
+			W:   w,
+			R:   r,
+			Log: log.WithFields(log.Fields{"tag": "web", "address": r.RemoteAddr}),
 		}
 
 		v, err := h(request)
@@ -58,15 +47,15 @@ func (m Middleware) Handle(h Handler) func(http.ResponseWriter, *http.Request) {
 		}
 
 		if err := m.responseJson(w, v); err != nil {
-			request.log.Debug("failed to send out json response: %s", err.Error())
+			request.Log.Debug("failed to send out json response: %s", err.Error())
 		}
 
 	}
 }
 
-// responseError response with error to the request. It set the proper http headers
+// responseError response with error to the Request. It set the proper http headers
 // and based on the error type send it out the required error message.
-func (m Middleware) responseError(w http.ResponseWriter, e error) {
+func (m JsonParser) responseError(w http.ResponseWriter, e error) {
 	w.Header().Set("Content-Type", "application/json;charset=utf-8")
 	if e == ErrRespInternalError {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -84,9 +73,9 @@ func (m Middleware) responseError(w http.ResponseWriter, e error) {
 	return
 }
 
-// responseJson marshal the response content and send out to the http request with
+// responseJson marshal the response content and send out to the http Request with
 // the proper headers.
-func (m Middleware) responseJson(w http.ResponseWriter, data interface{}) error {
+func (m JsonParser) responseJson(w http.ResponseWriter, data interface{}) error {
 	w.Header().Set("Content-Type", "application/json;charset=utf-8")
 	j, err := json.Marshal(data)
 	if err != nil {
