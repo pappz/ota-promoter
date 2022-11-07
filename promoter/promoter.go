@@ -31,13 +31,13 @@ type Promoter struct {
 	version        string
 }
 
-func NewPromoter(promotedFolder string) Promoter {
+func NewPromoter(promotedFolder string) *Promoter {
 	p := Promoter{
 		Mutex:          &sync.Mutex{},
 		promotedFolder: filepath.Clean(promotedFolder),
 	}
 
-	return p
+	return &p
 }
 
 func (p *Promoter) ReadFiles() (err error) {

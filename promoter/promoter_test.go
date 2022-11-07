@@ -28,6 +28,25 @@ func TestPromoter_Version(t *testing.T) {
 	}
 }
 
+func TestPromoter_VersionChanges(t *testing.T) {
+	p := NewPromoter(testFolder)
+	err := p.ReadFiles()
+	if err != nil {
+		t.Errorf("failed to read promoted files")
+	}
+	p1 := p.Version()
+
+	p.promotedFolder = "test/sub"
+	err = p.ReadFiles()
+	if err != nil {
+		t.Errorf("failed to read promoted files")
+	}
+
+	if p1 == p.Version() {
+		t.Errorf("invalid version: %s", p.Version())
+	}
+}
+
 func TestPromoter_PromotedFiles(t *testing.T) {
 	p := NewPromoter(testFolder)
 	err := p.ReadFiles()

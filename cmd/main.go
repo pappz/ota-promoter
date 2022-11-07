@@ -16,7 +16,7 @@ var (
 	shutdown = make(chan bool, 1)
 
 	webServer     web.Server
-	promo         promoter.Promoter
+	promo         *promoter.Promoter
 	changeWatcher promoter.ChangeWatcher
 )
 

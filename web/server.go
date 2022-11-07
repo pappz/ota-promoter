@@ -16,7 +16,7 @@ type Server struct {
 	httpServer *http.Server
 }
 
-func NewServer(listenAddress string, service promoter.Promoter) Server {
+func NewServer(listenAddress string, service *promoter.Promoter) Server {
 	router := mux.NewRouter()
 	api.RegisterVersionHandler(router, service)
 	api.RegisterFileListHandler(router, service)
