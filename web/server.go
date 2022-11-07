@@ -18,9 +18,9 @@ type Server struct {
 
 func NewServer(listenAddress string, service promoter.Promoter) Server {
 	router := mux.NewRouter()
+	api.RegisterVersionHandler(router, service)
 	api.RegisterFileListHandler(router, service)
 	api.RegisterDownloadHandler(router, service)
-	api.RegisterVersionHandler(router, service)
 
 	httpServer := &http.Server{
 		Addr:         listenAddress,
