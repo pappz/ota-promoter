@@ -1,4 +1,4 @@
-module bitbucket.org/pzoli/ota-promoter
+module github.com/pappz/ota-promoter
 
 require (
 	github.com/fsnotify/fsnotify v1.4.7

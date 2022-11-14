@@ -8,8 +8,8 @@ import (
 	log "github.com/sirupsen/logrus"
 	formatter "github.com/webkeydev/logger"
 
-	"bitbucket.org/pzoli/ota-promoter/promoter"
-	"bitbucket.org/pzoli/ota-promoter/web"
+	"github.com/pappz/ota-promoter/promoter"
+	"github.com/pappz/ota-promoter/web"
 )
 
 var (

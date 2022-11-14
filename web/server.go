@@ -8,8 +8,8 @@ import (
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
 
-	"bitbucket.org/pzoli/ota-promoter/promoter"
-	"bitbucket.org/pzoli/ota-promoter/web/api"
+	"github.com/pappz/ota-promoter/promoter"
+	"github.com/pappz/ota-promoter/web/api"
 )
 
 type Server struct {

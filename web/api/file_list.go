@@ -3,8 +3,8 @@ package api
 import (
 	"github.com/gorilla/mux"
 
-	"bitbucket.org/pzoli/ota-promoter/promoter"
-	"bitbucket.org/pzoli/ota-promoter/web/middleware"
+	"github.com/pappz/ota-promoter/promoter"
+	"github.com/pappz/ota-promoter/web/middleware"
 )
 
 // RegisterFileListHandler sets up the routing of the HTTP handlers.
