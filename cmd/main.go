@@ -21,9 +21,13 @@ var (
 )
 
 func init() {
+	prepareLogFormatter()
+	listenDoneSignal()
+}
+
+func prepareLogFormatter() {
 	formatter.SetTxtFormatterForLogger(log.StandardLogger())
 	log.StandardLogger().SetLevel(log.DebugLevel)
-	listenDoneSignal()
 }
 
 func listenDoneSignal() {
