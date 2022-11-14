@@ -9,9 +9,8 @@ import (
 
 // RegisterVersionHandler sets up the routing of the HTTP handlers.
 func RegisterVersionHandler(router *mux.Router, service *promoter.Promoter) {
-	m := middleware.JsonParser{}
 	h := versionHandler{service}
-	router.HandleFunc("/files/version", m.Handle(h.handle)).Methods("GET")
+	router.HandleFunc("/files/version", middleware.Handle(h.handle)).Methods("GET")
 }
 
 type ResponseVersion struct {

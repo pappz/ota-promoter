@@ -19,9 +19,8 @@ var (
 
 // RegisterDownloadHandler sets up the routing of the HTTP handlers.
 func RegisterDownloadHandler(router *mux.Router, service *promoter.Promoter) {
-	m := middleware.JsonParser{}
 	h := downloadHandler{service}
-	router.HandleFunc("/files/{checksum}", m.Handle(h.handle)).Methods("GET")
+	router.HandleFunc("/files/{checksum}", middleware.Handle(h.handle)).Methods("GET")
 }
 
 type downloadHandler struct {
