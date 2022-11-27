@@ -22,7 +22,6 @@ func (cw *ChangeWatcher) Watch(promotedFolder string, onChanged func(), onError 
 	if err := filepath.Walk(promotedFolder, cw.watchDir); err != nil {
 		return err
 	}
-	onChanged()
 	go func() {
 		for {
 			select {

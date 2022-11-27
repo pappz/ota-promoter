@@ -55,12 +55,18 @@ func watcherCb() {
 		log.Errorf("failed to read promoted files: %v", err)
 	}
 }
+
 func main() {
 	cfg, err := newConfig()
 	if err != nil {
 		os.Exit(1)
 	}
 	promo = promoter.NewPromoter(cfg.promotedFolder)
+	err = promo.ReadFiles()
+	if err != nil {
+		log.Fatalf("failed to read files: %s", err)
+	}
+
 	changeWatcher, err = promoter.NewChangeWatcher()
 	if err != nil {
 		log.Fatalf("failed to setup watcher: %s", err)
