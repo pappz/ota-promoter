@@ -15,11 +15,7 @@ func NewChangeWatcher() (ChangeWatcher, error) {
 	var err error
 	cw := ChangeWatcher{}
 	cw.watcher, err = fsnotify.NewWatcher()
-	if err != nil {
-		return cw, err
-	}
-
-	return cw, nil
+	return cw, err
 }
 
 func (cw *ChangeWatcher) Watch(promotedFolder string, onChanged func(), onError func(error)) (err error) {
