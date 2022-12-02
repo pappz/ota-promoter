@@ -23,6 +23,7 @@ var (
 	log = logrus.WithField("tag", "promoter")
 )
 
+// Promoter service maintain the meta information of the promoted files
 type Promoter struct {
 	*sync.Mutex
 	promotedFolder string
@@ -31,6 +32,7 @@ type Promoter struct {
 	version        string
 }
 
+// NewPromoter create Promoter service instance
 func NewPromoter(promotedFolder string) *Promoter {
 	p := Promoter{
 		Mutex:          &sync.Mutex{},
@@ -40,6 +42,8 @@ func NewPromoter(promotedFolder string) *Promoter {
 	return &p
 }
 
+// ReadFiles read all files in the promoted folder and filter out based on the ignore file.
+// At the end of the procedure calculate the version checksum
 func (p *Promoter) ReadFiles() (err error) {
 	p.Lock()
 	defer p.Unlock()
@@ -64,6 +68,7 @@ func (p *Promoter) ReadFiles() (err error) {
 	return nil
 }
 
+// PromotedFileByChecksum return a File based on it checksum
 func (p *Promoter) PromotedFileByChecksum(s string) (*File, bool) {
 	p.Lock()
 	defer p.Unlock()
@@ -75,6 +80,7 @@ func (p *Promoter) PromotedFileByChecksum(s string) (*File, bool) {
 	return nil, false
 }
 
+// PromotedFiles return a list of all promoted files
 func (p *Promoter) PromotedFiles() []*File {
 	p.Lock()
 	defer p.Unlock()
@@ -82,6 +88,7 @@ func (p *Promoter) PromotedFiles() []*File {
 	return p.promotedFiles
 }
 
+// Version return with the current version string
 func (p *Promoter) Version() string {
 	p.Lock()
 	defer p.Unlock()
