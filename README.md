@@ -24,6 +24,8 @@ and it will generate a new version hash code.
 With an HTTP client can get the current version code and the list of the available 
 files. Based on the hash code the HTTP client can download the modified files.
 
+You can set a list of ignored file. Create a **.promoterignore** file in the root path of your Python source and in it you can set the list of the ignored files. The service can process reqular expressions.
+
 ## API
 
 ### Get current version code
