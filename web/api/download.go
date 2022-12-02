@@ -55,6 +55,6 @@ func (req downloadHandler) handle(r *middleware.Request) (middleware.ResponseDat
 	if err != nil {
 		r.Log.Errorf("failed to write out the file to the client: %v", err)
 	}
-	r.Log.Infof("download promoted file: %s - %s", checksum, pf.PromotedPath)
+	r.Log.Debugf("download promoted file: %s - %s", checksum, pf.PromotedPath)
 	return nil, nil
 }
