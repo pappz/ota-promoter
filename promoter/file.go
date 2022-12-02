@@ -7,6 +7,7 @@ import (
 	"os"
 )
 
+// File describe the information of a promoted file
 type File struct {
 	PromotedPath string `json:"path"`
 	Checksum     string `json:"checksum"`
