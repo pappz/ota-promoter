@@ -42,7 +42,7 @@ func (req downloadHandler) handle(r *middleware.Request) (middleware.ResponseDat
 	}(openFile)
 
 	if err != nil {
-		r.Log.Errorf("Failed to open file: %s", err.Error())
+		r.Log.Errorf("failed to open file: %s", err.Error())
 		return nil, middleware.ErrRespInternalError
 	}
 
