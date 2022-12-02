@@ -67,12 +67,12 @@ func main() {
 		log.Fatalf("failed to read files: %s", err)
 	}
 
-	changeWatcher, err = promoter.NewChangeWatcher()
+	changeWatcher, err = promoter.NewChangeWatcher(cfg.promotedFolder, watcherCb, watcherError)
 	if err != nil {
 		log.Fatalf("failed to setup watcher: %s", err)
 	}
 
-	err = changeWatcher.Watch(cfg.promotedFolder, watcherCb, watcherError)
+	err = changeWatcher.Watch()
 	if err != nil {
 		log.Fatalf("failed to start watcher: %s, %s", err)
 	}

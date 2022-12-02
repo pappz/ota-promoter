@@ -26,13 +26,13 @@ func TestNewChangeWatcher_flat(t *testing.T) {
 		onErrorResult = err
 	}
 
-	cw, err := NewChangeWatcher()
+	cw, err := NewChangeWatcher(tmpDir, onChangedFn, onErrorFn)
 	if err != nil {
 		t.Fatalf("%s", err.Error())
 	}
 	defer cw.CloseWatcher()
 
-	err = cw.Watch(tmpDir, onChangedFn, onErrorFn)
+	err = cw.Watch()
 	if err != nil {
 		t.Fatalf("%s", err)
 	}
@@ -71,13 +71,13 @@ func TestNewChangeWatcher_subDir(t *testing.T) {
 		onErrorResult = err
 	}
 
-	cw, err := NewChangeWatcher()
+	cw, err := NewChangeWatcher(tmpDir, onChangedFn, onErrorFn)
 	if err != nil {
 		t.Fatalf("%s", err.Error())
 	}
 	defer cw.CloseWatcher()
 
-	err = cw.Watch(tmpDir, onChangedFn, onErrorFn)
+	err = cw.Watch()
 	if err != nil {
 		t.Fatalf("%s", err)
 	}
@@ -121,13 +121,13 @@ func TestNewChangeWatcher_deleteFile(t *testing.T) {
 		onErrorResult = err
 	}
 
-	cw, err := NewChangeWatcher()
+	cw, err := NewChangeWatcher(tmpDir, onChangedFn, onErrorFn)
 	if err != nil {
 		t.Fatalf("%s", err.Error())
 	}
 	defer cw.CloseWatcher()
 
-	err = cw.Watch(tmpDir, onChangedFn, onErrorFn)
+	err = cw.Watch()
 	if err != nil {
 		t.Fatalf("%s", err)
 	}
