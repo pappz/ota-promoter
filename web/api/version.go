@@ -26,6 +26,6 @@ func (req versionHandler) handle(r *middleware.Request) (middleware.ResponseData
 		Version: req.service.Version(),
 	}
 
-	r.Log.Infof("get version information (%s)", v.Version)
+	r.Log.Debugf("get version information (%s)", v.Version)
 	return v, nil
 }
