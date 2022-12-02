@@ -27,5 +27,6 @@ func (req fileListHandler) handle(r *middleware.Request) (middleware.ResponseDat
 		Version: req.service.Version(),
 		Files:   req.service.PromotedFiles(),
 	}
+	r.Log.Debugf("get file list request")
 	return resp, nil
 }
