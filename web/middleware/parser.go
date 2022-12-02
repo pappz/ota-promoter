@@ -42,7 +42,7 @@ func Handle(h Handler) func(http.ResponseWriter, *http.Request) {
 		}
 
 		if err := responseJson(w, v); err != nil {
-			request.Log.Debug("failed to send out json response: %s", err.Error())
+			request.Log.Debugf("failed to send out json response: %s", err.Error())
 		}
 
 	}
