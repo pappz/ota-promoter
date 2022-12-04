@@ -37,7 +37,7 @@ func NewServer(listenAddress string, service *promoter.Promoter) Server {
 
 func (s *Server) Listen() {
 	go func() {
-		if err := s.httpServer.ListenAndServe(); err != nil {
+		if err := s.httpServer.ListenAndServe(); err != http.ErrServerClosed {
 			log.Fatalf("listen error: '%s'", err)
 		}
 	}()
